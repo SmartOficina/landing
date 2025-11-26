@@ -1,0 +1,135 @@
+<section id="home" class="relative w-full overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-tr from-[#FBE6D8] via-white to-[#FFF1E8] z-0"></div>
+
+    <div class="absolute inset-0 z-1 opacity-[0.03]" style="background-image: linear-gradient(135deg, #EC9253 25%, transparent 25%), linear-gradient(225deg, #EC9253 25%, transparent 25%), linear-gradient(45deg, #EC9253 25%, transparent 25%), linear-gradient(315deg, #EC9253 25%, transparent 25%);
+         background-position: 10px 0, 10px 0, 0 0, 0 0;
+         background-size: 20px 20px;
+         background-repeat: repeat;"></div>
+
+    <div class="container mx-auto px-6 lg:px-8 pt-32 pb-24 relative z-10">
+        <div class="flex flex-col lg:flex-row gap-16">
+            <div class="lg:w-1/2 lg:pr-8 flex flex-col justify-center">
+                <div
+                    class="inline-flex items-center bg-white px-4 py-2 rounded-full shadow-lg mb-6 animate-pulse-subtle max-w-max">
+                    <div class="w-3 h-3 rounded-full bg-[#EC9253] mr-2"></div>
+                    <span class="text-[#42130F] font-medium text-sm">Sua oficina mais eficiente</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-[#42130F] leading-tight mb-6">
+                    Sistema completo para sua oficina
+                    <span class="relative">
+                        <span
+                            class="relative z-10 bg-gradient-to-r from-[#EC9253] to-[#f78839] bg-clip-text text-transparent font-bold">
+                            crescer
+                        </span>
+                        <span
+                            class="absolute -bottom-2 left-0 w-full h-3 bg-[#FBE6D8] opacity-70 -z-10 rounded-full"></span>
+                    </span>
+                </h1>
+
+                <p class="text-lg text-gray-700 mb-8 max-w-xl">
+                    Controle de clientes, ordens de serviço, estoque e financeiro em uma única plataforma.
+                    A solução completa para sua oficina ser <span class="font-semibold text-[#EC9253]">mais eficiente e
+                        lucrativa</span>.
+                </p>
+
+                <div class="grid grid-cols-3 gap-4 mb-10 max-w-xl">
+                    <div
+                        class="stats-card bg-white rounded-2xl p-4 shadow-lg text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                        <div class="text-2xl sm:text-3xl font-bold text-[#EC9253] mb-1">500+</div>
+                        <div class="text-xs sm:text-sm text-gray-500">Oficinas</div>
+                    </div>
+                    <div
+                        class="stats-card bg-white rounded-2xl p-4 shadow-lg text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                        <div class="text-2xl sm:text-3xl font-bold text-[#EC9253] mb-1">98%</div>
+                        <div class="text-xs sm:text-sm text-gray-500">Satisfação</div>
+                    </div>
+                    <div
+                        class="stats-card bg-white rounded-2xl p-4 shadow-lg text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                        <div class="text-2xl sm:text-3xl font-bold text-[#EC9253] mb-1">30%</div>
+                        <div class="text-xs sm:text-sm text-gray-500">Economia</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button (click)="navigateToRegister()"
+                        class="cta-button flex items-center justify-center bg-[#EC9253] hover:bg-[#f78839] text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 group">
+                        <span>Começar agora</span>
+                        <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-2"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </button>
+                    <button (click)="scrollToSection('features')"
+                        class="cta-button-secondary flex items-center justify-center border-2 border-[#42130F] text-[#42130F] py-3 sm:py-4 px-6 sm:px-8 rounded-xl font-bold text-base sm:text-lg hover:bg-[#42130F] hover:text-white transition-all duration-300 group">
+                        <span>Ver recursos</span>
+                        <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-y-1"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 hidden lg:flex items-center justify-center">
+                <div class="relative max-w-xl w-full">
+                    <div
+                        class="dashboard-main relative rounded-3xl overflow-visible shadow-2xl transform transition-all duration-500 hover:-translate-y-2 z-20">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-[#EC9253]/10 to-white/10 z-10 rounded-3xl">
+                        </div>
+                        <img src="./../../../../../assets/img/mec.png" alt="Dashboard Smart Oficina"
+                            class="w-full h-auto rounded-3xl relative z-0">
+
+                        <div
+                            class="absolute top-6 -right-16 bg-white rounded-xl shadow-lg p-4 max-w-[220px] transform rotate-3 animate-float z-30">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-sm font-semibold text-gray-800">Ordem #48921 concluída</div>
+                            </div>
+                            <div class="h-2 bg-green-500 rounded-full"></div>
+                        </div>
+
+                        <div
+                            class="absolute -bottom-12 -left-16 bg-white rounded-xl shadow-lg p-4 max-w-[220px] transform -rotate-2 animate-float-delayed z-30">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-sm font-semibold text-gray-800">Novo agendamento hoje</div>
+                            </div>
+                            <div class="h-2 bg-blue-500 rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="absolute top-10 -right-10 w-64 h-64 bg-[#FBE6D8] rounded-full filter blur-3xl opacity-60 animate-pulse-slow z-0">
+                    </div>
+                    <div
+                        class="absolute -bottom-10 -left-10 w-64 h-64 bg-[#EC9253]/30 rounded-full filter blur-3xl opacity-40 animate-pulse-slow z-0">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden transform translate-y-1" style="height: 150px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"
+            class="absolute bottom-0 w-full h-full">
+            <path
+                d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0V0z"
+                fill="#ffffff"></path>
+        </svg>
+    </div>
+</section>

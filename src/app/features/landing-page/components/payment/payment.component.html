@@ -1,0 +1,646 @@
+<div class="w-full" [ngClass]="{'flex flex-col min-h-screen': !isRegistrationMode}">
+    <app-header *ngIf="!isRegistrationMode" [isMobileView]="false"></app-header>
+
+    <div class="w-full" [ngClass]="{'flex-grow p-4 sm:p-6 bg-gradient-to-b from-[#FDF8F5] to-[#FFF1E8] mt-[65px]': !isRegistrationMode}">
+        <div class="mx-auto" [ngClass]="{'container py-8': !isRegistrationMode}">
+            <div *ngIf="isPageLoading" class="flex justify-center items-center py-12">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#EC9253]"></div>
+            </div>
+
+            <div *ngIf="!isPageLoading && !plan && !isRegistrationMode" class="text-center py-12">
+                <h2 class="text-2xl font-bold text-[#42130F] mb-4">Plano não encontrado</h2>
+                <p class="text-gray-600 mb-6">Não foi possível carregar as informações do plano selecionado.</p>
+                <button (click)="router.navigate(['/'])" class="bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition duration-300">Voltar para o início</button>
+            </div>
+
+            <div *ngIf="!isPageLoading && !plan && isRegistrationMode" class="text-center py-12">
+                <h2 class="text-2xl font-bold text-[#42130F] mb-4">Nenhum plano selecionado</h2>
+                <p class="text-gray-600 mb-6">Para continuar com o pagamento, primeiro selecione um plano na página inicial.</p>
+                <button (click)="router.navigate(['/'])" class="bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition duration-300">Selecionar Plano</button>
+            </div>
+
+            <div *ngIf="!isPageLoading && plan && isDowngradeAttempt" class="max-w-5xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden p-8 text-center">
+                    <div class="mb-6">
+                        <div class="w-20 h-20 mx-auto bg-blue-50 rounded-full flex items-center justify-center mb-4">
+                            <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+
+                        <h2 class="text-2xl font-bold text-[#42130F] mb-4">Mudança de plano indisponível no momento</h2>
+
+                        <div class="max-w-xl mx-auto">
+                            <p class="text-gray-600 mb-4">Notamos que você está tentando mudar para um plano de menor valor. Para garantir a melhor experiência, nosso sistema permite apenas upgrades para planos superiores durante uma assinatura ativa.</p>
+
+                            <div class="bg-blue-50 p-4 rounded-lg mb-6 text-left">
+                                <h3 class="font-medium text-blue-700 mb-2">Como fazer o downgrade:</h3>
+                                <ol class="text-blue-800 pl-6 list-decimal space-y-1">
+                                    <li>
+                                        Aguarde o término da sua assinatura atual em <span class="font-semibold">{{ getCurrentPlanEndDate() }}</span>
+                                    </li>
+                                    <li>Não renove seu plano atual quando ele expirar</li>
+                                    <li>Após a expiração, você poderá assinar qualquer plano disponível</li>
+                                </ol>
+                            </div>
+
+                            <p class="text-gray-600 mb-6">
+                                Enquanto isso, você continua com acesso completo ao seu plano atual <span class="font-medium text-[#42130F]">{{ currentPlan.name }}</span> até a data de término da assinatura.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button (click)="goToPricing()" class="px-6 py-3 rounded-full bg-[#EC9253] text-white shadow-md hover:shadow-lg transition-all">Voltar para os planos</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="pixIsProcessing && pixQrCode" class="max-w-5xl mx-auto mb-6">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-purple-50 to-purple-100 border-b relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 rounded-full bg-purple-200 opacity-20 transform translate-x-1/3 -translate-y-1/3"></div>
+                        <div class="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-purple-300 opacity-20 transform -translate-x-1/3 translate-y-1/3"></div>
+
+                        <div class="relative z-10">
+                            <div class="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 border-2 border-white shadow-sm">
+                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-purple-800 mb-1">Pagamento PIX gerado</h2>
+                                        <p class="text-sm text-gray-600">Escaneie o QR Code ou copie o código para pagar</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-3 shadow-sm flex items-center md:ml-auto gap-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs text-gray-500">Plano:</span>
+                                        <span class="font-medium text-purple-800">{{ plan.name }}</span>
+                                    </div>
+                                    <div class="h-8 w-px bg-gray-200"></div>
+                                    <div class="flex flex-col">
+                                        <span class="text-xs text-gray-500">Valor:</span>
+                                        <span class="font-medium text-purple-800">R$ {{ getDisplayPrice().toFixed(2).replace(".", ",") }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8">
+                        <div class="flex flex-col md:flex-row items-center gap-8">
+                            <div class="flex-1 text-center">
+                                <div class="bg-white p-5 border-2 border-purple-200 rounded-lg shadow-md mx-auto max-w-[320px] mb-4 hover:shadow-lg transition-all">
+                                    <img [src]="getSafePixQrCode()" alt="QR Code PIX" class="w-full h-auto" />
+                                </div>
+                                <p class="text-sm text-gray-600">Escaneie este QR Code no app do seu banco</p>
+                            </div>
+
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800 mb-3">Código PIX para copiar e colar</h4>
+                                <div class="flex mb-6">
+                                    <div class="flex-1 bg-gray-50 rounded-l-lg border-2 border-r-0 border-purple-200 p-3 text-sm text-gray-600 overflow-hidden text-ellipsis">
+                                        {{ pixCode }}
+                                    </div>
+                                    <button (click)="copyPixCode()" class="bg-purple-600 hover:bg-purple-700 text-white rounded-r-lg px-4 flex items-center transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="pixExpirationDate" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-6">
+                                    <div class="flex items-center">
+                                        <svg class="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-yellow-800">
+                                                O pagamento deve ser realizado até
+                                                <strong>{{ formatDate(pixExpirationDate) }}</strong>
+                                            </p>
+                                            <p class="text-xs text-yellow-700 mt-1">Após esse prazo, você precisará gerar um novo QR Code</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-6">
+                                    <button (click)="manualCheckPixStatus()" [disabled]="isButtonLoading" class="w-full md:max-w-[280px] mx-auto bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium shadow-md transition-all">
+                                        <span *ngIf="!isButtonLoading">Já fiz o pagamento</span>
+                                        <span *ngIf="isButtonLoading" class="flex items-center justify-center">
+                                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Verificando pagamento...
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-purple-50 border-t border-purple-100 text-center">
+                        <p class="text-sm text-gray-600">Após o pagamento, o sistema atualizará automaticamente em alguns instantes. Se preferir, clique em "Já fiz o pagamento" para verificar manualmente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!isPageLoading && plan && !isDowngradeAttempt && !pixIsProcessing" [ngClass]="{'max-w-5xl mx-auto': !isRegistrationMode}">
+                <div class="overflow-hidden" [ngClass]="{'bg-white rounded-2xl shadow-lg': !isRegistrationMode}">
+                    <div class="plan-header relative overflow-hidden" [ngClass]="{'p-8': !isRegistrationMode, 'p-4': isRegistrationMode}">
+                        <div class="circles" [ngClass]="{'hidden': isRegistrationMode}">
+                            <div class="circle circle-1"></div>
+                            <div class="circle circle-2"></div>
+                            <div class="circle circle-3"></div>
+                        </div>
+
+                        <div *ngIf="isRenewal" class="mb-4 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-yellow-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                </svg>
+                                <div>
+                                    <h3 class="font-semibold text-yellow-700">Renovação de Assinatura</h3>
+                                    <p class="text-sm text-yellow-600">Sua assinatura expirou. Renove agora para continuar utilizando todos os recursos.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="planChangeType === PlanChangeType.UPGRADE" class="mb-4 bg-green-50 border-l-4 border-green-400 p-4 rounded-md">
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                </svg>
+                                <div>
+                                    <h3 class="font-semibold text-green-700">Upgrade de Plano</h3>
+                                    <p class="text-sm text-green-600">Você está fazendo um upgrade para um plano de maior valor. O valor restante do seu plano atual será descontado automaticamente.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 *ngIf="!isRegistrationMode" class="text-lg font-semibold text-[#42130F] mb-4 pb-2 border-b flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-[#EC9253]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span *ngIf="planChangeType === PlanChangeType.NEW">Concluir assinatura</span>
+                            <span *ngIf="planChangeType === PlanChangeType.RENEWAL">Concluir renovação</span>
+                            <span *ngIf="planChangeType === PlanChangeType.UPGRADE">Upgrade de plano</span>
+                        </h3>
+
+                        <div
+                            class="plan-card bg-white rounded-xl shadow-lg p-6 relative overflow-hidden border"
+                            [ngClass]="{
+                                'border-yellow-400': isRenewal,
+                                'border-green-400': planChangeType === PlanChangeType.UPGRADE,
+                                'border-gray-100': planChangeType === PlanChangeType.NEW
+                            }">
+                            <div class="absolute right-0 bottom-0 opacity-5 text-9xl font-bold transform translate-x-8 translate-y-8 text-[#EC9253]">
+                                {{ plan.name ? plan.name[0] : "" }}
+                            </div>
+
+                            <div *ngIf="planChangeType === PlanChangeType.UPGRADE && currentPlan" class="flex flex-col md:flex-row justify-between gap-6 mb-6 pb-6 border-b">
+                                <div class="flex-1">
+                                    <p class="text-sm text-gray-500 mb-1">Plano atual:</p>
+                                    <h4 class="text-xl font-bold text-gray-700">{{ currentPlan.name }}</h4>
+                                    <p class="text-lg font-medium text-gray-600">R$ {{ currentPlan.price ? currentPlan.price.toFixed(2).replace(".", ",") : "0,00" }}/mês</p>
+                                </div>
+
+                                <div class="flex-none">
+                                    <div class="flex items-center">
+                                        <div class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row justify-between gap-6">
+                                <div class="flex-1">
+                                    <div class="flex items-start">
+                                        <div
+                                            class="p-3 rounded-full mr-4 flex-shrink-0"
+                                            [ngClass]="{
+                                                'bg-[#FBE6D8]': planChangeType === PlanChangeType.NEW,
+                                                'bg-yellow-100': isRenewal,
+                                                'bg-green-100': planChangeType === PlanChangeType.UPGRADE
+                                            }">
+                                            <svg *ngIf="planChangeType === PlanChangeType.NEW" class="w-6 h-6 text-[#EC9253]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                            </svg>
+                                            <svg *ngIf="isRenewal" class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                            </svg>
+                                            <svg *ngIf="planChangeType === PlanChangeType.UPGRADE" class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div>
+                                                <p class="text-sm text-gray-500 mb-1">
+                                                    <span *ngIf="planChangeType === PlanChangeType.UPGRADE">Novo plano (upgrade):</span>
+                                                    <span *ngIf="isRenewal">Renovação do plano:</span>
+                                                    <span *ngIf="planChangeType === PlanChangeType.NEW">Plano selecionado:</span>
+                                                </p>
+                                                <h3 class="text-2xl font-bold text-[#42130F]">{{ plan.name }}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 ml-14">
+                                        <p class="text-gray-500 text-sm mb-2">Principais recursos:</p>
+                                        <ul class="space-y-2 mb-4">
+                                            <li *ngFor="let feature of getMainFeatures(); let i = index" class="flex items-start text-sm" [class.hidden]="i >= 3">
+                                                <svg class="w-4 h-4 mr-2 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span class="text-gray-700">{{ feature }}</span>
+                                            </li>
+                                        </ul>
+                                        <button 
+                                            *ngIf="showChangePlanButton"
+                                            (click)="changePlan()"
+                                            class="bg-white hover:bg-gray-50 text-[#EC9253] border border-[#EC9253] hover:border-[#f78839] px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                            </svg>
+                                            Trocar Plano
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="price-container p-5 rounded-lg flex flex-col items-center justify-center shadow-sm border border-gray-100"
+                                    [ngClass]="{
+                                        'bg-[#F8F9FA]': planChangeType === PlanChangeType.NEW,
+                                        'bg-yellow-50 border-yellow-200': isRenewal,
+                                        'bg-green-50 border-green-200': planChangeType === PlanChangeType.UPGRADE
+                                    }">
+
+                                    <div *ngIf="couponValidated && couponInfo" class="w-full bg-[#FEEADC] rounded-lg p-3 mb-3 border border-[#EC9253]/30">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <svg class="w-5 h-5 text-[#EC9253] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                                </svg>
+                                                <span class="font-medium text-[#42130F]">{{ couponInfo.code }}</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <span class="text-[#EC9253] font-semibold ml-2">{{ couponInfo.discount }}%</span>
+                                                <button (click)="removeCoupon()" class="ml-3 text-gray-500 hover:text-red-500 transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="planChangeType === PlanChangeType.NEW || isRenewal">
+                                        <p class="text-sm font-medium text-gray-500 mb-1">
+                                            <span *ngIf="planChangeType === PlanChangeType.NEW">Valor da assinatura:</span>
+                                            <span *ngIf="isRenewal">Valor da renovação:</span>
+                                        </p>
+
+                                        <div class="flex flex-col items-center">
+
+                                            <div *ngIf="couponValidated && couponInfo" class="text-gray-500 text-lg line-through mb-1">R$ {{ plan.price.toFixed(2).replace(".", ",") }}</div>
+
+                                            <div class="flex items-baseline justify-center">
+                                                <span class="text-sm mr-1 text-gray-500">R$</span>
+                                                <span
+                                                    class="text-3xl font-extrabold"
+                                                    [ngClass]="{
+                                                        'text-[#EC9253]': planChangeType === PlanChangeType.NEW,
+                                                        'text-yellow-600': isRenewal
+                                                    }">
+                                                    {{ getDisplayPrice().toFixed(2).replace(".", ",") }}
+                                                </span>
+                                            </div>
+
+                                            <p class="text-xs text-gray-500 mt-1">{{ getPlanIntervalText() }}</p>
+
+                                            <div *ngIf="isAnnualBilling && plan?.annualSavings" class="mt-2 bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                {{ getAnnualSavingsText() }}
+                                            </div>
+
+                                            <div *ngIf="isFreeWithCoupon()" class="mt-3 bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Grátis com o cupom!</div>
+                                        </div>
+
+                                        <div class="bg-gray-50 rounded-lg p-4">
+                                            <div class="w-full mt-3 pt-3 border-t border-gray-200 text-center">
+                                                <p class="text-xs text-gray-500 mb-1">Parcele em até:</p>
+                                                <p class="text-sm font-semibold text-[#42130F]">{{ calculateMaxInstallments(getDisplayPrice()) }}x sem juros</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="planChangeType === PlanChangeType.UPGRADE" class="flex flex-col items-center w-full">
+                                        <div class="w-full p-4 bg-green-50 rounded-lg mb-4">
+                                            <h4 class="text-green-800 font-medium mb-2 text-center">Detalhes do Crédito</h4>
+
+                                            <div class="space-y-2">
+                                                <div *ngIf="proRatedCredit > 0" class="flex justify-between text-sm">
+                                                    <span class="text-gray-600">Crédito do plano atual:</span>
+                                                    <span class="font-medium text-green-700">R$ {{ proRatedCredit.toFixed(2).replace(".", ",") }}</span>
+                                                </div>
+
+                                                <div class="flex justify-between font-medium">
+                                                    <span class="text-gray-700">Crédito aplicado:</span>
+                                                    <span class="text-green-700">R$ {{ totalCredit.toFixed(2).replace(".", ",") }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full p-4 bg-white rounded-lg border border-green-200">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <span class="text-gray-700">Valor do plano:</span>
+                                                <span class="text-xl font-medium text-gray-800">R$ {{ plan.price.toFixed(2).replace(".", ",") }}</span>
+                                            </div>
+
+                                            <div *ngIf="couponValidated && couponInfo" class="flex justify-between items-center mb-2">
+                                                <span class="text-gray-700">Desconto do cupom:</span>
+                                                <span class="text-xl font-medium text-[#EC9253]">- R$ {{ ((plan.price * couponInfo.discount) / 100).toFixed(2).replace(".", ",") }}</span>
+                                            </div>
+
+                                            <div class="flex justify-between items-center mb-3">
+                                                <span class="text-gray-700">Crédito aplicado:</span>
+                                                <span class="text-xl font-medium text-green-600">- R$ {{ totalCredit.toFixed(2).replace(".", ",") }}</span>
+                                            </div>
+
+                                            <hr class="border-gray-200 mb-3" />
+
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-gray-800 font-medium">Valor a pagar:</span>
+                                                <span class="text-2xl font-bold text-green-700">R$ {{ amountToPay.toFixed(2).replace(".", ",") }}</span>
+                                            </div>
+
+                                            <p class="text-xs text-gray-500 text-center mt-2">Valor pago hoje. Seu próximo pagamento será no valor integral do plano em 30 dias.</p>
+                                        </div>
+
+                                        <div class="bg-gray-50 rounded-lg p-4">
+                                            <div class="w-full mt-3 pt-3 border-t border-gray-200 text-center">
+                                                <p class="text-xs text-gray-500 mb-1">Parcele em até:</p>
+                                                <p class="text-sm font-semibold text-[#42130F]">{{ calculateMaxInstallments(getDisplayPrice()) }}x sem juros</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="planChangeType === PlanChangeType.UPGRADE && !shouldRequirePayment" class="mt-3 pt-3 border-t border-gray-200 w-full">
+                                        <p class="text-xs text-green-600 text-center font-medium">Upgrade gratuito! Seus créditos cobrem o valor total.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8">
+
+                        <div *ngIf="planChangeType === PlanChangeType.UPGRADE && !shouldRequirePayment" class="px-6 py-4 mb-6 bg-green-50 border border-green-200 rounded-lg shadow-sm">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <p class="text-green-700 font-medium">Upgrade para o {{ plan.name }} aprovado sem custos adicionais! Continue para realizar a mudança.</p>
+                            </div>
+                        </div>
+
+                        <form (ngSubmit)="processPayment()">
+                            <div *ngIf="shouldShowPaymentFields() && !isFreeWithCoupon()" class="mb-6">
+                                <h3 class="text-xl font-bold text-[#42130F] mb-6 pb-2 border-b flex items-center">
+                                    <svg class="w-7 h-7 mr-3 text-[#EC9253]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    Método de Pagamento
+                                </h3>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div (click)="selectedPaymentMethod = PaymentMethod.CREDIT_CARD" class="payment-method-card border rounded-xl p-5 cursor-pointer transition-all duration-300 shadow-sm" [ngClass]="{ 'bg-gradient-to-r from-[#FBE6D8]/60 to-[#FDF8F5]/80 border-[#EC9253] shadow-md': selectedPaymentMethod === PaymentMethod.CREDIT_CARD, 'hover:shadow-md hover:bg-gray-50/80': selectedPaymentMethod !== PaymentMethod.CREDIT_CARD }">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0" [ngClass]="{ 'bg-[#FBE6D8]': selectedPaymentMethod === PaymentMethod.CREDIT_CARD, 'bg-gray-100': selectedPaymentMethod !== PaymentMethod.CREDIT_CARD }">
+                                                <svg class="w-6 h-6" [ngClass]="{ 'text-[#EC9253]': selectedPaymentMethod === PaymentMethod.CREDIT_CARD, 'text-gray-500': selectedPaymentMethod !== PaymentMethod.CREDIT_CARD }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-1">
+                                                    <span class="font-semibold text-lg" [ngClass]="{ 'text-[#42130F]': selectedPaymentMethod === PaymentMethod.CREDIT_CARD, 'text-gray-700': selectedPaymentMethod !== PaymentMethod.CREDIT_CARD }"> Cartão de Crédito </span>
+                                                    <div *ngIf="selectedPaymentMethod === PaymentMethod.CREDIT_CARD" class="ml-6 bg-[#EC9253]/20 text-[#EC9253] text-xs px-2 py-0.5 rounded-full font-medium">Selecionado</div>
+                                                </div>
+                                                <p class="text-sm" [ngClass]="{ 'text-[#EC9253]': selectedPaymentMethod === PaymentMethod.CREDIT_CARD, 'text-gray-500': selectedPaymentMethod !== PaymentMethod.CREDIT_CARD }">Pagamento seguro e processamento imediato</p>
+                                            </div>
+                                            <div class="flex-shrink-0 ml-2">
+                                                <div class="w-6 h-6 border-2 rounded-full flex items-center justify-center" [ngClass]="{ 'border-[#EC9253]': selectedPaymentMethod === PaymentMethod.CREDIT_CARD, 'border-gray-300': selectedPaymentMethod !== PaymentMethod.CREDIT_CARD }">
+                                                    <div class="w-3 h-3 rounded-full bg-[#EC9253]" *ngIf="selectedPaymentMethod === PaymentMethod.CREDIT_CARD"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div (click)="selectedPaymentMethod = PaymentMethod.PIX" class="payment-method-card border rounded-xl p-5 cursor-pointer transition-all duration-300 shadow-sm" [ngClass]="{ 'bg-gradient-to-r from-purple-50/80 to-purple-50/50 border-purple-500 shadow-md': selectedPaymentMethod === PaymentMethod.PIX, 'hover:shadow-md hover:bg-gray-50/80': selectedPaymentMethod !== PaymentMethod.PIX }">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0" [ngClass]="{ 'bg-purple-100': selectedPaymentMethod === PaymentMethod.PIX, 'bg-gray-100': selectedPaymentMethod !== PaymentMethod.PIX }">
+                                                <svg class="w-6 h-6" [ngClass]="{ 'text-purple-600': selectedPaymentMethod === PaymentMethod.PIX, 'text-gray-500': selectedPaymentMethod !== PaymentMethod.PIX }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-1">
+                                                    <span class="font-semibold text-lg" [ngClass]="{ 'text-purple-800': selectedPaymentMethod === PaymentMethod.PIX, 'text-gray-700': selectedPaymentMethod !== PaymentMethod.PIX }"> PIX </span>
+                                                    <div *ngIf="selectedPaymentMethod === PaymentMethod.PIX" class="ml-6 bg-purple-100 text-purple-600 text-xs px-2 py-0.5 rounded-full font-medium">Selecionado</div>
+                                                </div>
+                                                <p class="text-sm" [ngClass]="{ 'text-purple-600': selectedPaymentMethod === PaymentMethod.PIX, 'text-gray-500': selectedPaymentMethod !== PaymentMethod.PIX }">Transferência instantânea com QR Code</p>
+                                            </div>
+                                            <div class="flex-shrink-0 ml-2">
+                                                <div class="w-6 h-6 border-2 rounded-full flex items-center justify-center" [ngClass]="{ 'border-purple-500': selectedPaymentMethod === PaymentMethod.PIX, 'border-gray-300': selectedPaymentMethod !== PaymentMethod.PIX }">
+                                                    <div class="w-3 h-3 rounded-full bg-purple-500" *ngIf="selectedPaymentMethod === PaymentMethod.PIX"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-6">
+                                    <h3 class="text-xl font-bold text-[#42130F] mb-3 flex items-center">
+                                        <svg class="w-6 h-6 mr-2 text-[#EC9253]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                        </svg>
+                                        Cupom de desconto
+                                    </h3>
+                                    <div class="bg-white border rounded-lg p-4 border-[#EC9253]/30">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="flex-1">
+                                                <input type="text" [(ngModel)]="couponCode" name="couponCode" placeholder="Digite o código do cupom" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#EC9253] focus:border-transparent transition" [class.border-red-300]="couponError" />
+                                                <p *ngIf="couponError" class="text-red-500 text-sm mt-1">{{ couponError }}</p>
+                                            </div>
+                                            <button type="button" (click)="validateCoupon()" class="px-4 py-3 bg-[#EC9253] hover:bg-[#f78839] text-white font-medium rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#EC9253]/50" [disabled]="!couponCode || couponValidated || validatingCoupon" *ngIf="!couponValidated">
+                                                <span *ngIf="!validatingCoupon">Aplicar</span>
+                                                <span *ngIf="validatingCoupon" class="flex items-center">
+                                                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    Validando...
+                                                </span>
+                                            </button>
+                                            <button type="button" (click)="removeCoupon()" class="px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition focus:outline-none focus:ring-2 focus:ring-gray-300" *ngIf="couponValidated">Remover</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="shouldShowPaymentFields() && selectedPaymentMethod === PaymentMethod.CREDIT_CARD && !isFreeWithCoupon()">
+                                <h3 class="text-xl font-bold text-[#42130F] mb-6 pb-2 border-b flex items-center">
+                                    <svg class="w-7 h-7 mr-3 text-[#EC9253]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                    </svg>
+                                    Informações do Cartão
+                                </h3>
+
+                                <div *ngIf="savedCards.length > 0" class="mb-6">
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Seus cartões salvos</h4>
+
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <div *ngFor="let card of savedCards" class="saved-card-container border rounded-lg overflow-hidden transition-all duration-300" [ngClass]="{ 'border-[#EC9253] shadow-md': selectedCardId === card.id, 'border-gray-200 hover:border-gray-300': selectedCardId !== card.id }" (click)="selectedCardId = card.id">
+                                            <div class="p-3 flex items-center justify-between bg-white">
+
+                                                <div class="flex items-center flex-1">
+
+                                                    <div class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-2 flex-shrink-0" [ngClass]="{ 'border-[#EC9253]': selectedCardId === card.id, 'border-gray-400': selectedCardId !== card.id }">
+                                                        <div class="w-3 h-3 rounded-full bg-[#EC9253]" *ngIf="selectedCardId === card.id"></div>
+                                                    </div>
+
+                                                    <div class="flex items-center">
+                                                        <div class="flex items-center">
+                                                            <div class="card-brand-badge mr-2 flex-shrink-0" [ngClass]="{ 'text-blue-600': card.cardBrand === 'Visa', 'text-red-600': card.cardBrand === 'Mastercard', 'text-gray-700': card.cardBrand !== 'Visa' && card.cardBrand !== 'Mastercard' }">
+                                                                <span class="font-bold text-sm">{{ card.cardBrand }}</span>
+                                                            </div>
+                                                            <span class="text-base font-medium text-gray-800 mr-2">•••• {{ card.lastFourDigits }}</span>
+                                                            <span class="text-sm text-gray-600 hidden sm:inline">{{ card.holderName }}</span>
+                                                            <span class="text-sm text-gray-500 mx-2 hidden sm:inline">|</span>
+                                                            <span class="text-sm text-gray-600 hidden sm:inline">Exp: {{ card.expiryMonth }}/{{ card.expiryYear }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-center gap-2">
+
+                                                    <span *ngIf="card.isDefault" class="inline-flex items-center bg-[#FBE6D8] text-[#EC9253] text-xs px-2 py-0.5 rounded-full">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                        Padrão
+                                                    </span>
+
+                                                    <button type="button" *ngIf="!card.isDefault" (click)="setDefaultCard(card.id); $event.stopPropagation()" class="flex items-center text-[#EC9253] hover:text-[#f78839] text-xs px-2 py-1 rounded bg-[#FBE6D8]/20 hover:bg-[#FBE6D8]/40 transition-colors">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                                        </svg>
+                                                        Padrão
+                                                    </button>
+
+                                                    <button type="button" (click)="deleteCard(card.id); $event.stopPropagation()" class="text-gray-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-3 pb-3 pt-0 bg-white border-t border-gray-100 flex flex-col sm:hidden">
+                                                <div class="text-xs text-gray-600 mt-1">{{ card.holderName }}</div>
+                                                <div class="text-xs text-gray-600 mt-1">Exp: {{ card.expiryMonth }}/{{ card.expiryYear }}</div>
+                                            </div>
+
+                                            <div *ngIf="selectedCardId === card.id" class="px-3 py-3 bg-gray-50 border-t">
+                                                <div>
+                                                    <label for="cardInstallment" class="block text-sm text-gray-600 mb-1">Parcelamento</label>
+                                                    <select id="cardInstallment" [(ngModel)]="selectedInstallment" name="installments" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#EC9253]">
+                                                        <option *ngFor="let option of installmentOptions" [value]="option.value">
+                                                            {{ option.label }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 flex items-center p-3 border border-dashed border-gray-300 rounded-lg hover:border-[#EC9253] transition-colors cursor-pointer" [ngClass]="{ 'bg-[#FBE6D8]/10 border-[#EC9253]': !selectedCardId }" (click)="selectedCardId = ''">
+                                        <div class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-3" [ngClass]="{ 'border-[#EC9253]': !selectedCardId, 'border-gray-400': selectedCardId }">
+                                            <div class="w-3 h-3 rounded-full bg-[#EC9253]" *ngIf="!selectedCardId"></div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            <span class="text-[#EC9253] font-medium">Usar um novo cartão</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="!selectedCardId" class="grid grid-cols-1 gap-6 mb-4">
+                                    <app-input-generic #cardNumberInput label="Número do Cartão" placeholder="0000 0000 0000 0000" type="cardNumber" [(value)]="cardNumber" [required]="true" (fieldCompleted)="cardNameInput.focus()"> </app-input-generic>
+
+                                    <app-input-generic #cardNameInput label="Nome no Cartão" placeholder="Nome como aparece no cartão" type="name" [(value)]="cardName" [required]="true"> </app-input-generic>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <app-input-generic #cardExpiryInput label="Data de Validade" placeholder="MM/AA" type="cardExpiry" [(value)]="cardExpiry" [required]="true" (fieldCompleted)="cardCvvInput.focus()"> </app-input-generic>
+
+                                        <app-input-generic #cardCvvInput label="CVV" placeholder="123" type="cardCvv" [(value)]="cardCvv" [required]="true" [helpText]="'Código de segurança no verso do cartão'"> </app-input-generic>
+
+                                        <div>
+                                            <label for="installments" class="block text-gray-700 mb-1">Parcelamento</label>
+                                            <select id="installments" [(ngModel)]="selectedInstallment" name="installments" (change)="calculateInstallmentValue()" class="w-full h-12 border border-gray-300 rounded-lg px-3 text-lg shadow-sm focus:ring-2 focus:ring-[#f78839] focus:outline-none">
+                                                <option *ngFor="let option of installmentOptions" [value]="option.value">
+                                                    {{ option.label }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 border-t pt-6 flex flex-col items-center">
+                                <button type="submit" [disabled]="isButtonLoading" [ngClass]="getButtonClass()" class="w-full md:w-auto text-white font-bold py-3 px-12 rounded-full shadow-lg hover:shadow-xl transition duration-300 min-w-[200px] mb-4">
+                                    <span *ngIf="!isButtonLoading">{{ getButtonText() }}</span>
+                                    <span *ngIf="isButtonLoading" class="flex items-center justify-center">
+                                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Processando...
+                                    </span>
+                                </button>
+
+                                <div *ngIf="isButtonLoading" class="text-gray-600 text-sm animate-pulse text-center mb-4">
+                                    {{ processingMessage }}
+                                </div>
+
+                                <p class="text-xs text-gray-500 text-center">
+                                    Ao finalizar, você concorda com nossos
+                                    <a href="#" class="text-[#EC9253] hover:underline">Termos de Serviço</a> e
+                                    <a href="#" class="text-[#EC9253] hover:underline">Política de Privacidade</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="p-4 bg-[#F8F9FA] border-t flex justify-center items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Garantia de 30 dias. Satisfação ou seu dinheiro de volta.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-footer *ngIf="!isRegistrationMode"></app-footer>
+</div>

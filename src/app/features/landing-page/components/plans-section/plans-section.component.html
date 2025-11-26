@@ -1,0 +1,257 @@
+<section id="pricing" class="py-16 relative overflow-hidden" [ngClass]="{'py-0': isRegistrationMode}">
+    <div class="absolute inset-0 bg-gradient-to-b from-white to-[#FDF8F5] pointer-events-none" [ngClass]="{'hidden': isRegistrationMode}"></div>
+
+    <div class="mx-auto relative z-10" [ngClass]="{'container px-4 md:px-8': !isRegistrationMode}">
+        <div class="text-center mb-12 max-w-3xl mx-auto" *ngIf="!isRegistrationMode">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-[#FBE6D8] text-[#EC9253] font-medium text-sm mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Preços transparentes
+            </div>
+
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-[#42130F]">O plano ideal para sua <span class="bg-gradient-to-r from-[#EC9253] to-[#f78839] bg-clip-text text-transparent">oficina crescer</span></h2>
+
+            <p class="text-lg text-gray-700 mb-8">Escolha o plano que melhor se adapta às necessidades do seu negócio com flexibilidade para mudar a qualquer momento</p>
+            
+            <div class="flex justify-center mb-8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-6 py-5 max-w-4xl">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-8">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-[#FBE6D8] rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">100% Flexível</h4>
+                                <p class="text-sm text-gray-600">Sem carência nem multas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="hidden sm:block w-px h-10 bg-gray-200"></div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-[#FBE6D8] rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">Sem Fidelidade</h4>
+                                <p class="text-sm text-gray-600">Cancele quando quiser</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-center mb-8">
+            <div class="bg-white rounded-full p-1 shadow-lg border border-gray-200" [ngClass]="{'bg-gray-50': isRegistrationMode}">
+                <div class="flex items-center">
+                    <button (click)="toggleBillingPeriod()" [class]="'px-6 py-3 rounded-full font-medium transition-all duration-300 ' + (!isAnnualBilling ? 'bg-[#EC9253] text-white shadow-md' : 'text-gray-600 hover:text-[#EC9253]')">Mensal</button>
+                    <button (click)="toggleBillingPeriod()" [class]="'px-6 py-3 rounded-full font-medium transition-all duration-300 relative ' + (isAnnualBilling ? 'bg-[#EC9253] text-white shadow-md' : 'text-gray-600 hover:text-[#EC9253]')">
+                        Anual
+                        <span class="absolute -top-1 -right-1 bg-green-500 text-white text-xs px-2 py-1 rounded-full"> -{{ annualDiscountPercent }}% </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isLoading" class="flex justify-center py-12">
+            <div class="loader-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && plans.length === 0" class="flex flex-col items-center py-10 px-4 text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Não foi possível carregar os planos</h3>
+            <p class="text-gray-600 max-w-md mx-auto mb-6">Ocorreu um erro ao buscar informações. Por favor, tente novamente.</p>
+            <button (click)="loadPlans()" class="flex items-center px-6 py-3 bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white rounded-full hover:shadow-lg transform transition-all duration-300 hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Tentar novamente
+            </button>
+        </div>
+        <div *ngIf="!isLoading && plans.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-10">
+            <ng-container *ngFor="let plan of displayPlans; let i = index; trackBy: trackPlan">
+                <div
+                    class="plan-card relative rounded-xl overflow-hidden transition-all duration-300 min-w-[280px]"
+                    [ngClass]="{
+                        'bg-white shadow-md': i !== 1 && !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked,
+                        'bg-white shadow-lg transform md:scale-105': i === 1 && !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked,
+                        'bg-white border-2 border-green-500 shadow-md': plan.isCurrentPlan && !plan.isExpired,
+                        'bg-white border-2 border-yellow-500 shadow-md': plan.isCurrentPlan && plan.isExpired,
+                        'bg-white border border-gray-200 opacity-75': plan.isDowngrade,
+                        'locked-plan-card bg-white border border-red-200 shadow-md': plan.isLocked
+                    }">
+                    <div *ngIf="i === 1 && !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked" class="absolute top-0 right-0">
+                        <div class="bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white px-4 py-1 rounded-bl-lg">
+                            <span class="uppercase text-xs font-bold tracking-wider">Mais Popular</span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="plan.isCurrentPlan && !plan.isExpired" class="absolute top-0 right-0">
+                        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-1 rounded-bl-lg">
+                            <span class="uppercase text-xs font-bold tracking-wider">Seu Plano Atual</span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="plan.isCurrentPlan && plan.isExpired" class="absolute top-0 right-0">
+                        <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-4 py-1 rounded-bl-lg">
+                            <span class="uppercase text-xs font-bold tracking-wider">Plano Vencido</span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="plan.isDowngrade" class="absolute top-0 right-0">
+                        <div class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-1 rounded-bl-lg">
+                            <span class="uppercase text-xs font-bold tracking-wider">Downgrade Bloqueado</span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="plan.isLocked" class="absolute top-0 right-0">
+                        <div class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-1 rounded-bl-lg">
+                            <span class="uppercase text-xs font-bold tracking-wider">Plano Bloqueado</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6" [ngClass]="{ 'opacity-75': plan.isDowngrade || plan.isLocked }">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-[#42130F]">{{ plan.name }}</h3>
+                                <p class="text-gray-600 mt-1">{{ plan.description }}</p>
+                            </div>
+                            <div
+                                class="w-12 h-12 rounded-full flex items-center justify-center"
+                                [ngClass]="{
+                                    'bg-[#FBE6D8]': !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked,
+                                    'bg-green-100': plan.isCurrentPlan && !plan.isExpired,
+                                    'bg-yellow-100': plan.isCurrentPlan && plan.isExpired,
+                                    'bg-gray-100': plan.isDowngrade || plan.isLocked
+                                }">
+                                <svg *ngIf="i === 2 && !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                <svg *ngIf="i === 1 && !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                </svg>
+                                <svg *ngIf="i === 0 && !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                </svg>
+                                <svg *ngIf="plan.isCurrentPlan && !plan.isExpired" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg *ngIf="plan.isCurrentPlan && plan.isExpired" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg *ngIf="plan.isDowngrade" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg *ngIf="plan.isLocked" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mb-6 text-center bg-[#FDF8F5] rounded-lg p-4"
+                            [ngClass]="{
+                                'bg-green-50': plan.isCurrentPlan && !plan.isExpired,
+                                'bg-yellow-50': plan.isCurrentPlan && plan.isExpired,
+                                'bg-gray-50': plan.isDowngrade || plan.isLocked
+                            }">
+                            <div class="flex items-baseline justify-center">
+                                <span class="text-gray-500 mr-1">R$</span>
+                                <span
+                                    class="text-3xl font-extrabold"
+                                    [ngClass]="{
+                                        'text-[#EC9253]': !plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked,
+                                        'text-green-600': plan.isCurrentPlan && !plan.isExpired,
+                                        'text-yellow-600': plan.isCurrentPlan && plan.isExpired,
+                                        'text-gray-500': plan.isDowngrade || plan.isLocked
+                                    }"
+                                    >{{ getCurrentPlanPrice(plan).toFixed(2).replace(".", ",") }}</span
+                                >
+                                <span class="text-gray-500 ml-1">{{ getCurrentPlanInterval(plan) }}</span>
+                            </div>
+
+                            <div *ngIf="shouldShowSavings(plan)" class="mt-2">
+                                <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded-full">
+                                    {{ getSavingsText(plan) }}
+                                </span>
+                            </div>
+
+                            <p class="text-gray-500 text-sm mt-2">
+                                {{ getInstallmentText(getCurrentPlanPrice(plan)) }}
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h4 class="font-semibold text-[#42130F] mb-4">O que está incluído:</h4>
+                            <div class="space-y-3">
+                                <div *ngFor="let feature of plan.features; let fIndex = index; trackBy: trackFeature" class="feature-row py-2 flex items-start" [ngClass]="{ 'feature-row-alt': fIndex % 2 === 1 }">
+                                    <div *ngIf="feature.included" class="feature-icon w-6 h-6 flex-shrink-0 mr-3 text-green-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="!feature.included" class="feature-icon w-6 h-6 flex-shrink-0 mr-3 text-gray-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </div>
+                                    <span class="feature-text" [ngClass]="{ 'text-gray-700': feature.included, 'text-gray-400': !feature.included }">
+                                        {{ feature.name }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button *ngIf="plan.isCurrentPlan && !plan.isExpired" class="w-full bg-green-500 text-white py-3 rounded-lg font-medium cursor-default flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Plano Atual
+                            </button>
+
+                            <button *ngIf="plan.isCurrentPlan && plan.isExpired" (click)="selectPlan(plan)" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Renovar Plano
+                            </button>
+
+                            <button *ngIf="plan.isDowngrade" class="w-full bg-gray-400 text-white py-3 rounded-lg font-medium cursor-not-allowed opacity-60 flex items-center justify-center" title="Downgrade não permitido durante uma assinatura ativa">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Indisponível
+                            </button>
+
+                            <button *ngIf="plan.isLocked" class="w-full bg-gray-400 text-white py-3 rounded-lg font-medium cursor-not-allowed opacity-60 flex items-center justify-center" title="Este plano está bloqueado no momento">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                Bloqueado
+                            </button>
+
+                            <button *ngIf="!plan.isCurrentPlan && !plan.isDowngrade && !plan.isLocked" (click)="selectPlan(plan)" [ngClass]="['w-full text-white py-3 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r', i === 1 ? 'from-[#42130F] to-[#834d38] hover:from-[#834d38] hover:to-[#42130F]' : 'from-[#EC9253] to-[#f78839] hover:from-[#f78839] hover:to-[#EC9253]']">
+                                {{ getActionButtonText(plan) }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>

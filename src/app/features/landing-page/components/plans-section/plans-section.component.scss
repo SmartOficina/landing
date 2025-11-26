@@ -1,0 +1,205 @@
+#pricing {
+    position: relative;
+    z-index: 1;
+
+    .loader-ring {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+
+        div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #EC9253;
+            border-radius: 50%;
+            animation: loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #EC9253 transparent transparent transparent;
+
+            &:nth-child(1) {
+                animation-delay: -0.45s;
+            }
+
+            &:nth-child(2) {
+                animation-delay: -0.3s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: -0.15s;
+            }
+        }
+    }
+
+    @keyframes loader-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .animate-pulse-slow {
+        animation: pulse-slow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-slow {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+}
+
+.plan-card {
+    transition: all 0.3s ease;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease-out forwards;
+
+    &.animated {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-3xl {
+        transition: all 0.3s ease;
+    }
+
+    &:hover .text-3xl {
+        transform: scale(1.05);
+    }
+
+    button {
+        transition: all 0.3s ease;
+        font-weight: 600;
+
+        &:not(.cursor-default):hover {
+            transform: translateY(-2px);
+        }
+    }
+
+    .feature-row {
+        border-radius: 6px;
+        transition: background-color 0.2s;
+        padding: 8px 10px;
+
+        &:hover {
+            background-color: rgba(236, 146, 83, 0.05);
+        }
+
+        &.feature-row-alt {
+            background-color: rgba(250, 250, 250, 0.5);
+
+            &:hover {
+                background-color: rgba(236, 146, 83, 0.05);
+            }
+        }
+    }
+
+    .feature-icon {
+        transition: transform 0.2s;
+    }
+
+    .feature-row:hover .feature-icon {
+        transform: scale(1.1);
+    }
+
+    .feature-text {
+        transition: color 0.2s;
+    }
+}
+
+.locked-plan-card {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(to right, #9ca3af, #6b7280);
+    }
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(107, 114, 128, 0.15) !important;
+    }
+
+    border: 1px dashed rgba(107, 114, 128, 0.4) !important;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.inline-flex.items-center.bg-white {
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+    }
+}
+
+@media (max-width: 1023px) {
+    .plan-card {
+        margin-bottom: 1rem;
+    }
+
+    .md\:grid-cols-3 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    #pricing {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .text-3xl {
+        font-size: 1.75rem;
+    }
+
+    .plan-card {
+        padding: 1.25rem;
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .feature-row {
+            padding: 6px 8px;
+        }
+    }
+}

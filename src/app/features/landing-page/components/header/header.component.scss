@@ -1,0 +1,230 @@
+header {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-container {
+    position: relative;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+
+        .logo-icon {
+            box-shadow: 0 10px 25px -5px rgba(236, 146, 83, 0.5);
+        }
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(236, 146, 83, 0.2), transparent 70%);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: -1;
+        transition: width 0.5s ease, height 0.5s ease;
+    }
+
+    &:hover::before {
+        width: 120%;
+        height: 120%;
+    }
+}
+
+.logo-icon {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 5px 15px -3px rgba(236, 146, 83, 0.3);
+
+    svg {
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.2));
+    }
+}
+
+.nav-item {
+    position: relative;
+    padding: 0.5rem 0;
+    cursor: pointer;
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--primary-color);
+        transition: width 0.3s ease;
+    }
+
+    &:hover::after {
+        width: 100%;
+    }
+}
+
+button {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.btn-primary {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 15px -3px rgba(236, 146, 83, 0.3);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+        box-shadow: 0 8px 25px -5px rgba(236, 146, 83, 0.5);
+    }
+}
+
+.menu-icon {
+    svg {
+        transition: all 0.3s ease;
+    }
+
+    &:hover svg {
+        transform: scale(1.1) rotate(5deg);
+
+        path {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: dash 0.5s linear forwards;
+        }
+    }
+}
+
+.menu-close-icon {
+    svg {
+        transition: all 0.3s ease;
+    }
+
+    &:hover svg {
+        transform: scale(1.1) rotate(90deg);
+
+        path {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: dash 0.5s linear forwards;
+        }
+    }
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+#mobile-menu {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    button,
+    a {
+        transition: all 0.3s ease;
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    &.translate-x-0 {
+        transform: translateX(0);
+    }
+}
+
+.nav-item.group .absolute {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transform-origin: top center;
+
+    a {
+        transition: all 0.2s ease;
+
+        &:hover {
+            .font-medium {
+                color: var(--primary-color);
+            }
+
+            .w-10 {
+                background-color: var(--primary-color);
+
+                svg {
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+.nav-item.group .absolute a:hover .w-10 svg {
+    color: white;
+}
+
+.nav-item.group .absolute a .w-10 {
+    transition: all 0.3s ease;
+}
+
+.nav-item.group .absolute a .w-10 svg {
+    transition: all 0.3s ease;
+    color: #EC9253;
+}
+
+.nav-item:not(.group) {
+    &:hover {
+        .block.absolute {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 1023px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #mobile-menu-button {
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+
+        &:focus {
+            outline: none;
+            background-color: rgba(236, 146, 83, 0.1);
+        }
+    }
+
+    #mobile-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+
+        .py-8 {
+            padding-top: 1.5rem;
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        .mb-8 {
+            margin-bottom: 1.5rem;
+        }
+    }
+}

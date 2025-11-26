@@ -1,0 +1,138 @@
+<footer class="relative pt-20 pb-8 overflow-hidden mt-[-5px]">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#42130F] to-[#2D0D0A] pointer-events-none"></div>
+
+    <div class="absolute top-20 right-20 w-40 h-40 bg-[#EC9253]/10 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-20 left-20 w-60 h-60 bg-[#EC9253]/10 rounded-full blur-3xl animate-pulse-slow-delay"></div>
+
+    <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
+            <div class="md:col-span-1">
+                <div class="mb-5">
+                    <img src="assets/img/logo-white.png" alt="Smart Oficina Logo" class="h-12" />
+                </div>
+                <p class="text-gray-300 mb-6 pr-8">A solução completa para a gestão da sua oficina mecânica. Simplifique processos, aumente sua eficiência e melhore seus resultados.</p>
+
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/smartoficinaoficial/" target="_blank" rel="noopener noreferrer" class="social-icon w-10 h-10 rounded-full bg-[#EC9253]/20 hover:bg-[#EC9253] flex items-center justify-center transition-colors duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#EC9253] group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z M17.5 6.5h.01"></path>
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-bold text-white mb-6 relative footer-heading glow-text">
+                    Navegação
+                    <span class="heading-underline"></span>
+                </h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a (click)="scrollToSection('features')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Funcionalidades
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="scrollToSection('pricing')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Planos e Preços
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="scrollToSection('contact')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Contato
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-bold text-white mb-6 relative footer-heading glow-text">
+                    Suporte
+                    <span class="heading-underline"></span>
+                </h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a (click)="navigateTo('faq')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            FAQ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Tutoriais
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="scrollToSection('contact')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Contatar Suporte
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-bold text-white mb-6 relative footer-heading glow-text">
+                    Legal
+                    <span class="heading-underline"></span>
+                </h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a (click)="navigateToBlank('terms-of-use')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Termos de Uso
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="navigateToBlank('privacy-policy')" class="footer-link text-gray-300 hover:text-[#EC9253] transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#EC9253]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Política de Privacidade
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-[#EC9253]/40 to-transparent mb-8"></div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between text-gray-400 text-sm">
+            <div class="mb-4 md:mb-0">
+
+                <p></p>
+            </div>
+
+            <div class="flex flex-wrap gap-4">
+                <a href="#" class="hover:text-[#EC9253] transition-colors duration-300">Status do Sistema</a>
+                <span class="hidden md:inline text-gray-600">|</span>
+                <a (click)="navigateToBlank('privacy-policy')" class="hover:text-[#EC9253] transition-colors duration-300">Política de Privacidade</a>
+            </div>
+        </div>
+    </div>
+
+    <button (click)="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-[#EC9253] text-white flex items-center justify-center shadow-lg hover:bg-[#f78839] focus:outline-none transition-all duration-300 z-50 back-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
+</footer>

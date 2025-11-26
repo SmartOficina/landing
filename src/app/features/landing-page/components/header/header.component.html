@@ -1,0 +1,91 @@
+<header class="fixed w-full z-50 transition-all duration-300" [ngClass]="{ 'bg-white/95 shadow-lg py-3': isScrolled, 'py-5': !isScrolled }">
+    <div class="container mx-auto px-4 lg:px-8 flex items-center justify-between">
+        <div class="flex items-center cursor-pointer logo-container" (click)="goToHome()">
+            <img src="assets/img/logo.png" alt="Smart Oficina Logo" class="h-14" />
+        </div>
+
+        <nav class="hidden lg:flex items-center space-x-8">
+            <a (click)="scrollToSection('features')" class="nav-item text-[#42130F] hover:text-[#EC9253] font-medium relative transition-colors cursor-pointer">
+                Funcionalidades
+                <span class="block absolute left-0 w-0 h-0.5 bg-[#EC9253] bottom-0 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+
+            <a (click)="scrollToSection('pricing')" class="nav-item text-[#42130F] hover:text-[#EC9253] font-medium relative transition-colors">
+                Planos e Preços
+                <span class="block absolute left-0 w-0 h-0.5 bg-[#EC9253] bottom-0 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+
+            <a (click)="scrollToSection('contact')" class="nav-item text-[#42130F] hover:text-[#EC9253] font-medium relative transition-colors">
+                Contato
+                <span class="block absolute left-0 w-0 h-0.5 bg-[#EC9253] bottom-0 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </nav>
+
+        <div class="hidden lg:flex items-center space-x-4">
+            <ng-container *ngIf="isAuthenticated && garageInfo; else loginButtons">
+                <div class="flex items-center">
+                    <span class="text-[#42130F] mr-3">
+                        Olá, <span class="font-semibold text-[#EC9253]">{{ garageInfo.name }}</span>
+                    </span>
+                    <button class="relative overflow-hidden btn-primary px-6 py-2.5 rounded-full group" (click)="goToSystem()">
+                        <span class="relative z-10">Meu Painel</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#EC9253] to-[#f78839] group-hover:from-[#f78839] group-hover:to-[#EC9253] transition-all duration-500"></div>
+                    </button>
+                </div>
+            </ng-container>
+
+            <ng-template #loginButtons>
+                <button class="text-[#42130F] hover:text-[#EC9253] border border-gray-300 hover:border-[#EC9253] px-5 py-2 rounded-lg transition-colors" (click)="goToLogin()">Entrar</button>
+                <button class="relative overflow-hidden btn-primary px-6 py-2.5 rounded-full group" (click)="navigateToRegister()">
+                    <span class="relative z-10">Comece agora</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#EC9253] to-[#f78839] group-hover:from-[#f78839] group-hover:to-[#EC9253] transition-all duration-500"></div>
+                </button>
+            </ng-template>
+        </div>
+
+        <button type="button" class="lg:hidden text-[#42130F] hover:text-[#EC9253] transition-colors menu-icon" id="mobile-menu-button" aria-label="Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="mobile-menu" class="fixed top-0 left-0 right-0 bottom-0 z-50 lg:hidden bg-white/95 transform transition-transform duration-300 translate-x-full h-screen overflow-y-auto">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center space-x-3">
+                    <img src="assets/img/logo.png" alt="Smart Oficina Logo" class="h-14" />
+                </div>
+                <button type="button" class="text-[#42130F] hover:text-[#EC9253] menu-close-icon" aria-label="Fechar menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="mb-8">
+                <a (click)="scrollToSectionAndCloseMenu('features')" class="block p-4 rounded-lg hover:bg-[#FBE6D8] transition-colors text-lg font-medium text-[#42130F]"> Funcionalidades </a>
+
+                <a (click)="scrollToSectionAndCloseMenu('pricing')" class="block p-4 rounded-lg hover:bg-[#FBE6D8] transition-colors text-lg font-medium text-[#42130F]"> Planos e Preços </a>
+
+                <a (click)="scrollToSectionAndCloseMenu('contact')" class="block p-4 rounded-lg hover:bg-[#FBE6D8] transition-colors text-lg font-medium text-[#42130F]"> Contato </a>
+            </nav>
+
+            <div class="space-y-4">
+                <ng-container *ngIf="isAuthenticated && garageInfo; else mobileLoginButtons">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-[#42130F] mb-2">
+                            Olá, <span class="font-semibold text-[#EC9253]">{{ garageInfo.name }}</span>
+                        </p>
+                        <button (click)="goToSystem(); closeMobileMenu()" class="w-full bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white p-3 rounded-lg font-medium shadow-lg">Acessar Meu Painel</button>
+                    </div>
+                </ng-container>
+
+                <ng-template #mobileLoginButtons>
+                    <button (click)="goToLogin(); closeMobileMenu()" class="w-full text-[#42130F] border border-gray-300 p-3 rounded-lg font-medium">Entrar</button>
+                    <button (click)="navigateToRegister(); closeMobileMenu()" class="w-full bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white p-3 rounded-lg font-medium shadow-lg">Comece agora</button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</header>

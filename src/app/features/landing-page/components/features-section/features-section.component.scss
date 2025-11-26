@@ -1,0 +1,216 @@
+#features {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background-attachment: fixed;
+        background-size: cover;
+        opacity: 0.05;
+    }
+}
+
+.feature-card {
+    height: 100%;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+
+        h3 {
+            transform: translateX(5px);
+        }
+
+        .w-14 {
+            transform: scale(1.1) rotate(5deg);
+        }
+    }
+
+    h3 {
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    p {
+        transition: color 0.3s ease;
+    }
+
+    .w-14 {
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 5px 15px -5px rgba(236, 146, 83, 0.2);
+
+        img {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s ease;
+        }
+    }
+
+    .group {
+        svg {
+            transition: transform 0.3s ease;
+        }
+    }
+
+    @for $i from 1 through 6 {
+        &:nth-child(#{$i}) {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+            animation-delay: #{$i * 0.1}s;
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(236, 146, 83, 0.1), transparent 70%);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: -1;
+        transition: width 0.5s ease, height 0.5s ease;
+        pointer-events: none;
+    }
+
+    &:hover::after {
+        width: 120%;
+        height: 120%;
+    }
+}
+
+.development-card {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -5px rgba(59, 130, 246, 0.2);
+    border: 1px dashed rgba(59, 130, 246, 0.3);
+
+    &:hover {
+        box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3);
+        border: 1px dashed rgba(59, 130, 246, 0.5);
+    }
+
+    .development-pulse {
+        z-index: 1;
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3);
+        animation: development-pulse 2s infinite;
+    }
+}
+
+@keyframes development-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 4s linear infinite;
+}
+
+.inline-flex.items-center.px-4.py-2.rounded-full {
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px -3px rgba(236, 146, 83, 0.2);
+    }
+}
+
+button.relative.overflow-hidden.group {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1023px) {
+    .feature-card {
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        .w-14 {
+            width: 3rem;
+            height: 3rem;
+
+            img {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+    }
+
+    .grid-cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    #features {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .feature-card {
+        max-width: 450px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    button.relative.overflow-hidden.group {
+        padding: 0.75rem 1.5rem;
+
+        span {
+            font-size: 0.9rem;
+        }
+    }
+}

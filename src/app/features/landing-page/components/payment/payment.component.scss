@@ -1,0 +1,344 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+button,
+a {
+    transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+select:focus {
+    box-shadow: 0 0 0 2px rgba(236, 146, 83, 0.2);
+    border-color: #EC9253;
+}
+
+input:focus {
+    box-shadow: 0 0 0 2px rgba(236, 146, 83, 0.2);
+    border-color: #EC9253;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.price-container p.text-xs {
+    margin-top: 2px;
+    text-align: center;
+    width: 100%;
+}
+
+.payment-method-card {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.payment-method-card .ml-6 {
+    margin-left: 1.5rem;
+}
+
+.payment-method-card:hover {
+    transform: translateY(-2px);
+}
+
+.payment-method-card:active {
+    transform: translateY(0);
+}
+
+.payment-method-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+    transition: opacity 0.5s ease;
+}
+
+.payment-method-card:hover::after {
+    opacity: 0.5;
+}
+
+.plan-header .circles {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.plan-header .circle {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.plan-header .circle-1 {
+    width: 300px;
+    height: 300px;
+    right: -100px;
+    top: -100px;
+    background: radial-gradient(circle, rgba(236, 146, 83, 0.05) 0%, rgba(236, 146, 83, 0) 70%);
+}
+
+.plan-header .circle-2 {
+    width: 200px;
+    height: 200px;
+    left: -70px;
+    bottom: -70px;
+    background: radial-gradient(circle, rgba(236, 146, 83, 0.05) 0%, rgba(236, 146, 83, 0) 70%);
+}
+
+.plan-header .circle-3 {
+    width: 100px;
+    height: 100px;
+    right: 30%;
+    bottom: 20%;
+    background: radial-gradient(circle, rgba(236, 146, 83, 0.08) 0%, rgba(236, 146, 83, 0) 70%);
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #EC9253;
+    border-color: #EC9253;
+}
+
+input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 2px rgba(236, 146, 83, 0.2);
+    border-color: #EC9253;
+}
+
+.saved-card-container {
+    transition: all 0.3s ease;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.saved-card-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.saved-card-container.border-\[\#EC9253\] {
+    box-shadow: 0 4px 12px rgba(236, 146, 83, 0.15);
+}
+
+.saved-card-container .card-brand-badge {
+    display: inline-flex;
+    align-items: center;
+    min-width: 60px;
+}
+
+.saved-card-container svg {
+    transition: all 0.2s ease;
+}
+
+.saved-card-container:hover svg.text-gray-400 {
+    transform: scale(1.1);
+}
+
+.border-dashed {
+    transition: all 0.3s ease;
+}
+
+.border-dashed:hover {
+    background-color: rgba(236, 146, 83, 0.05);
+}
+
+.pix-qr-container img {
+    margin: 0 auto;
+    max-width: 320px;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+.pix-qr-container img:hover {
+    transform: scale(1.03);
+}
+
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(147, 51, 234, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+    }
+}
+
+.animate-pulse-border {
+    animation: pulse-border 2s infinite;
+}
+
+.pix-timer {
+    position: relative;
+}
+
+.pix-timer circle.countdown-ring {
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation: countdown 30s linear forwards;
+}
+
+@keyframes countdown {
+    from {
+        stroke-dashoffset: 0;
+    }
+
+    to {
+        stroke-dashoffset: 283;
+    }
+}
+
+.coupon-field {
+    position: relative;
+    transition: all 0.3s ease;
+    border-color: rgba(236, 146, 83, 0.3);
+}
+
+.coupon-field:hover {
+    border-color: rgba(236, 146, 83, 0.5);
+}
+
+.coupon-field:focus-within {
+    border-color: #EC9253;
+    box-shadow: 0 0 0 3px rgba(236, 146, 83, 0.2);
+}
+
+.coupon-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: #FEEADC;
+    color: #EC9253;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.coupon-badge:hover {
+    background-color: #FDE0CC;
+}
+
+.coupon-discount-display {
+    background: linear-gradient(135deg, #FEEADC 0%, #FEFBF8 100%);
+    border: 1px solid rgba(236, 146, 83, 0.3);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .p-6 {
+        padding: 1.25rem;
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .plan-card {
+        padding: 1.25rem;
+    }
+
+    .plan-card .text-3xl {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .rounded-xl {
+        border-radius: 0.75rem;
+    }
+
+    .text-xl {
+        font-size: 1.25rem;
+    }
+
+    .pix-qr-container img {
+        max-width: 250px;
+    }
+
+    .saved-card-container .card-brand-badge {
+        min-width: 40px;
+    }
+}

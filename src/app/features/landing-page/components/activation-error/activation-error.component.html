@@ -1,0 +1,68 @@
+<div class="min-h-screen bg-gradient-to-b from-[#FDF8F5] to-[#FFF1E8] flex items-center justify-center p-4">
+  <div class="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl p-8 border-t-4 border-red-500 text-center">
+    
+    <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-bold text-[#42130F] mb-4">
+      ⚠️ Erro na Ativação
+    </h1>
+
+    <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+      <p class="text-red-800 text-lg">
+        {{ errorMessage }}
+      </p>
+    </div>
+
+    <div class="bg-[#FDF8F5] border border-[#EC9253] rounded-lg p-6 mb-6 text-left">
+      <h3 class="text-lg font-semibold text-[#42130F] mb-4 text-center">🔧 Possíveis Soluções:</h3>
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex items-start">
+          <span class="text-[#EC9253] mr-2">•</span>
+          <span>O link de ativação pode ter expirado (válido por 24 horas)</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-[#EC9253] mr-2">•</span>
+          <span>O link pode ter sido usado anteriormente</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-[#EC9253] mr-2">•</span>
+          <span>Verifique se copiou o link completo do e-mail</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-[#EC9253] mr-2">•</span>
+          <span>Tente fazer um novo cadastro ou entrar em contato com o suporte</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button 
+        (click)="goToLogin()" 
+        class="bg-gradient-to-r from-[#EC9253] to-[#f78839] text-white px-8 py-3 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105">
+        🔐 Tentar Fazer Login
+      </button>
+      <button 
+        (click)="goToRegistration()" 
+        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
+        📝 Novo Cadastro
+      </button>
+      <button 
+        (click)="goToHomePage()" 
+        class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium transition-colors">
+        🏠 Voltar ao Início
+      </button>
+    </div>
+
+    <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+      <p class="text-sm text-gray-600">
+        <strong>Precisa de ajuda?</strong><br>
+        Entre em contato com nosso suporte: <a href="mailto:suporte&#64;smartoficina.com.br" class="text-[#EC9253] hover:underline">suporte&#64;smartoficina.com.br</a>
+      </p>
+    </div>
+
+  </div>
+</div>
