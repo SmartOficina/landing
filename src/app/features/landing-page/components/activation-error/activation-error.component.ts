@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { environment } from '@environment/environment';
 
 @Component({
   selector: 'app-activation-error',
@@ -30,7 +31,7 @@ export class ActivationErrorComponent implements OnInit {
   }
 
   goToLogin(): void {
-    this.router.navigate(['/system/login']);
+    window.location.href = environment.system_url;
   }
 
   goToHomePage(): void {

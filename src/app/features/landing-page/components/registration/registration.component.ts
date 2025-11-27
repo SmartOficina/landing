@@ -15,6 +15,7 @@ import { CouponService } from '@shared/services/coupon.service';
 import { PaymentService } from '@shared/services/payment.service';
 import { Subscription } from 'rxjs';
 import { PlansSectionComponent } from '../plans-section/plans-section.component';
+import { environment } from '@environment/environment';
 
 
 @Component({
@@ -184,7 +185,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   navigateToLogin(): void {
-    this.router.navigate(['/system']);
+    window.location.href = environment.system_url;
   }
 
   goToHomePage(): void {
@@ -359,23 +360,23 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             this.authService.autoLogin(loginResponse, false);
             
             this.alertService.showAlert('Sucesso!', 'Pagamento realizado com sucesso! Sua conta foi ativada automaticamente.', 'success', 'Acessar sistema').then(() => {
-              this.router.navigate(['/system']);
+              window.location.href = environment.system_url;
             });
           } else {
             this.alertService.showAlert('Sucesso!', 'Pagamento realizado com sucesso! Sua conta foi ativada. Faça login para continuar.', 'success', 'Fazer login').then(() => {
-              this.router.navigate(['/system']);
+              window.location.href = environment.system_url;
             });
           }
         },
         error: () => {
           this.alertService.showAlert('Sucesso!', 'Pagamento realizado com sucesso! Sua conta foi ativada. Faça login para continuar.', 'success', 'Fazer login').then(() => {
-            this.router.navigate(['/system']);
+            window.location.href = environment.system_url;
           });
         }
       });
     } else {
       this.alertService.showAlert('Sucesso!', 'Pagamento realizado com sucesso! Sua conta foi ativada. Faça login para continuar.', 'success', 'Fazer login').then(() => {
-        this.router.navigate(['/system']);
+        window.location.href = environment.system_url;
       });
     }
   }
