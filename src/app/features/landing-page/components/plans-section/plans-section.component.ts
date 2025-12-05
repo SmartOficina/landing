@@ -5,6 +5,7 @@ import { AlertService } from "@shared/services/alert.service";
 import { LandingPageService } from "../../landing-page.service";
 import { PlansService } from "@shared/services/plans.service";
 import { Subscription } from "rxjs";
+import { environment } from "@environment/environment";
 
 interface RenewalInfo {
   planId: string;
@@ -52,7 +53,7 @@ interface ProcessedPlan {
 export class PlansSectionComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() isRegistrationMode: boolean = false;
   @Output() planSelected = new EventEmitter<any>();
-  
+
   isLoading: boolean = false;
   plans: ProcessedPlan[] = [];
   isAuthenticated: boolean = false;
@@ -63,6 +64,8 @@ export class PlansSectionComponent implements OnInit, AfterViewInit, OnDestroy {
   minInstallmentPrice: number = 79.9;
   installmentIncrement: number = 19.9;
   maxInstallments: number = 12;
+  trialEnabled: boolean = environment.trialEnabled;
+  trialDays: number = environment.trialDays;
   private subscriptions: Subscription[] = [];
 
   // prettier-ignore
@@ -120,8 +123,7 @@ export class PlansSectionComponent implements OnInit, AfterViewInit, OnDestroy {
           this.maxInstallments = response.body.result.maxInstallments;
         }
       },
-      error: (error) => {
-      },
+      error: (error) => {},
     });
   }
 
@@ -256,7 +258,7 @@ export class PlansSectionComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.isRegistrationMode) {
       const planToEmit = {
         ...plan,
-        isAnnual: this.isAnnualBilling
+        isAnnual: this.isAnnualBilling,
       };
       this.planSelected.emit(planToEmit);
       return;
